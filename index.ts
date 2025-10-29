@@ -50,6 +50,22 @@ app.post("/ld", (req, res) => {
         const newLengthMinutes = req.body.lengthMinutes
         const newVideoFormat = req.body.videoFormat
 
+        if(!newFilmName || !newRotationType || !newRegion || !newLengthMinutes || !newVideoFormat){
+            return res.status(400).send("Error: se necesitan todos los parametros")
+        }
+
+        if(newFilmName===""||newRegion===""){
+            return res.status(400).send("Error: no se permite strings vacios")
+        }
+
+        if (newRotationType.toUpperCase()!= "CAV" && newRotationType.toUpperCase()!="CLV") {
+            return res.status(400).send("rotationType no es válida")
+        }
+
+        if (newVideoFormat.toUpperCase()!= "NTSC" && newVideoFormat.toUpperCase()!="PAL") {
+            return res.status(400).send("videoFormat no es válida")
+        }
+
         const newLD: LD = {
             id: newId,
             ...req.body
@@ -96,14 +112,17 @@ app.put("/ld/:id", (req, res) => {
     return res.status(404).json({ error: "No se ha encontrado el disco que quieres actualizar" })
   }
 
-  if (filmName && (typeof filmName !== "string" || !filmName)) {
+  if (filmName && (typeof filmName !== "string")) {
     return res.status(400).send("El nombre no es válido")
   }
   if (rotationType && rotationType !== "CAV" && rotationType !== "CLV") {
     return res.status(400).send("rotationType no es válida")
   }
-  if (region && (typeof region !== "string" || !region)) {
+  if (region && (typeof region !== "string")) {
     return res.status(400).send("La región no es válida")
+  }
+  if(filmName===""||region===""){
+    return res.status(400).send("Error: no se permite strings vacios")
   }
 
   discos[index] = { ...discos[index], ...req.body }
