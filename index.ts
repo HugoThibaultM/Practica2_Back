@@ -135,7 +135,11 @@ const testApi = async () => {
         console.log("POST LD ", resPost)
 
         const resPut = (await axios.put<LD[]>("http://localhost:3000/ld/1", {
-            titles: 200
+            filmName: "Dexter",
+            rotationType: "CAV",
+            region: "USA",
+            lengthMinutes: 100,
+            videoFormat:"NTSC"
         })).data
 
         console.log("PUT LD ", resPut)
